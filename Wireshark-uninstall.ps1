@@ -1,0 +1,34 @@
+<#
+.SYNOPSIS
+    Uninstalls Wireshark from the system executing the script.
+    Tested on Wireshark Version 2.2.1 (v2.2.1-0-ga6fbd27 from master-2.2).
+    Please test thoroughly in a non-production environment before deploying widely.
+    Run as Administrator or with appropriate privileges.
+.USAGE
+    Example syntax:
+    PS C:\> .\wireshark-uninstall.ps1 
+#>
+ 
+ # Define the variables
+$wiresharkDisplayName = "Wireshark 2.2.1 (64-bit)"
+$uninstallerPath = "$env:ProgramFiles\Wireshark\uninstall.exe"
+$silentUninstallSwitch = "/S"
+
+# Function to check if Wireshark is installed
+function Is-WiresharkInstalled {
+    return Test-Path -Path $uninstallerPath
+}
+
+# Function to uninstall Wireshark
+function Uninstall-Wireshark {
+    if (Is-WiresharkInstalled) {
+        Write-Output "Uninstalling Wireshark..."
+        & $uninstallerPath $silentUninstallSwitch
+        Write-Output "$($wiresharkDisplayName) has been uninstalled."
+    } else {
+        Write-Output "$($wiresharkDisplayName) is not installed."
+    }
+}
+
+# Execute the uninstall function
+Uninstall-Wireshark
